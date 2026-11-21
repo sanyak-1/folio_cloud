@@ -12,7 +12,7 @@ const ALLOWED_EXTENSIONS = ['.pdf', '.docx'];
 
 // Where the backend listens (see backend/main.py). In a real deployment this
 // would come from a setting instead of being typed here.
-const API_URL = 'http://localhost:8000/api/resume/upload';
+const API_URL = 'http://98.93.19.133/api/resume/upload';
 
 // `onUploadSuccess` is a function passed down from App (a "callback prop").
 // We call it with the parsed resume data once the backend answers.

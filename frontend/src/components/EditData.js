@@ -24,7 +24,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Where the backend saves portfolios (see backend/main.py).
-const SAVE_URL = 'http://localhost:8000/api/portfolio';
+const SAVE_URL = 'http://98.93.19.133/api/portfolio';
 
 // The templates the user can choose from. `id` is what we save in the
 // database. It must match the IDs the backend accepts (TemplateId in

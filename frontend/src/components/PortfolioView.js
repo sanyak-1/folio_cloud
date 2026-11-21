@@ -14,7 +14,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Portfolio from './Portfolio';
 
 // The backend address for loading one portfolio (see backend/main.py).
-const API_BASE_URL = 'http://localhost:8000/api/portfolio';
+const API_BASE_URL = 'http://98.93.19.133/api/portfolio';
 
 // The templates Portfolio.js and App.css know how to draw. These must match
 // the ids saved by the editor.
