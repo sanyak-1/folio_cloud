@@ -1,0 +1,1490 @@
+/* src/App.css
+   Pure CSS, no libraries. Sections, in page order:
+   1. Design tokens (variables)   4. Buttons
+   2. Page layout + background    5. Upload form + drop zone
+   3. Header                      6. Portfolio
+                                  7. Small screens + reduced motion */
+
+/* ============================================================
+   1. DESIGN TOKENS
+   Every colour, radius and shadow lives here. Change a value
+   once and the whole app updates.
+   ============================================================ */
+:root {
+  /* Blues */
+  --blue-900: #10264f;
+  --blue-700: #1b3a9e;
+  --blue-600: #2347c5;
+  --blue-500: #3b64e0;
+  --blue-100: #dde7ff;
+  --blue-50: #eef3ff;
+
+  /* Slate grays */
+  --slate-900: #0f172a;
+  --slate-700: #334155;
+  --slate-500: #64748b;
+  --slate-300: #cbd5e1;
+  --slate-200: #e2e8f0;
+  --slate-50: #f8fafc;
+
+  --white: #ffffff;
+  --error: #b42318;
+
+  /* Shape and depth */
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04),
+    0 16px 40px -12px rgba(15, 23, 42, 0.16);
+  --shadow-button: 0 6px 16px -4px rgba(35, 71, 197, 0.45);
+  --shadow-button-hover: 0 10px 22px -6px rgba(35, 71, 197, 0.55);
+
+  --font-sans: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif;
+}
+
+/* ============================================================
+   2. PAGE LAYOUT + BACKGROUND
+   We style .app (not body) so index.css stays untouched.
+   The "mesh gradient" is several soft radial gradients layered
+   on top of a light base colour.
+   ============================================================ */
+.app {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 3rem 1.25rem 5rem;
+  color: var(--slate-900);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  background-color: #f4f7fc;
+  background-image: radial-gradient(
+      at 12% 8%,
+      rgba(59, 100, 224, 0.18) 0,
+      transparent 45%
+    ),
+    radial-gradient(at 88% 4%, rgba(125, 211, 252, 0.22) 0, transparent 42%),
+    radial-gradient(at 80% 92%, rgba(165, 180, 252, 0.2) 0, transparent 45%),
+    radial-gradient(at 8% 85%, rgba(186, 230, 253, 0.18) 0, transparent 40%);
+  background-attachment: fixed;
+}
+
+/* One shared, centred column for the header and the main card. */
+.app-header,
+.app-main {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   3. HEADER
+   ============================================================ */
+.app-header {
+  margin-bottom: 2rem;
+}
+
+/* The small rounded square before the logo is drawn in CSS,
+   so we need no image or icon library. */
+.app-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--blue-900);
+}
+
+.app-logo::before {
+  content: '';
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 7px;
+  background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+  box-shadow: 0 4px 10px -2px rgba(35, 71, 197, 0.5);
+}
+
+.app-tagline {
+  margin: 0.4rem 0 0;
+  font-size: 1.05rem;
+  color: var(--slate-500);
+}
+
+/* ============================================================
+   4. BUTTONS
+   ============================================================ */
+.button {
+  width: 100%;
+  padding: 0.85rem 1.5rem;
+  border: none;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+  color: var(--white);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-button);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-button-hover);
+  filter: brightness(1.06);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-button);
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Outlined button for secondary actions. */
+.button-secondary {
+  width: auto;
+  background: var(--white);
+  color: var(--blue-600);
+  border: 1px solid var(--slate-300);
+  box-shadow: none;
+}
+
+.button-secondary:hover:not(:disabled) {
+  background: var(--blue-50);
+  border-color: var(--blue-500);
+  box-shadow: none;
+  filter: none;
+}
+
+/* Clear focus ring for keyboard users. */
+.button:focus-visible {
+  outline: 3px solid var(--blue-100);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   5. UPLOAD FORM + DROP ZONE
+   ============================================================ */
+.upload-form {
+  padding: 2.25rem;
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.upload-form h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+.upload-hint {
+  margin: 0.25rem 0 1.5rem;
+  color: var(--slate-500);
+}
+
+/* The drop zone box. position: relative lets the invisible file
+   input stretch across it. */
+.dropzone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background: var(--blue-50);
+  border: 2px dashed var(--slate-300);
+  border-radius: var(--radius-md);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.dropzone:hover,
+.dropzone:focus-within {
+  border-color: var(--blue-500);
+  background: #e6edff;
+}
+
+/* After a file is picked: solid border, so the state change is obvious. */
+.dropzone-filled {
+  border-style: solid;
+  border-color: var(--blue-500);
+  background: #e6edff;
+}
+
+.dropzone-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: 0.75rem;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--blue-600);
+  font-size: 1.6rem;
+  font-weight: 300;
+  line-height: 1;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
+}
+
+.dropzone-title {
+  margin: 0;
+  font-weight: 600;
+  color: var(--slate-900);
+}
+
+.dropzone-subtitle {
+  margin: 0.15rem 0 0;
+  font-size: 0.95rem;
+  color: var(--slate-500);
+}
+
+/* The real <input type="file"> is invisible but covers the entire
+   drop zone, so clicks and dragged files land on it. */
+.file-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.file-input:disabled {
+  cursor: not-allowed;
+}
+
+/* The invisible input can't show a focus ring, so the box does it. */
+.dropzone:focus-within {
+  outline: 3px solid var(--blue-100);
+  outline-offset: 2px;
+}
+
+.file-name {
+  margin: 0 0 1.25rem;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--blue-700);
+  background: var(--blue-50);
+  border-radius: var(--radius-sm);
+  /* Long file names wrap instead of overflowing. */
+  overflow-wrap: anywhere;
+}
+
+.error {
+  margin: 0 0 1.25rem;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.95rem;
+  color: var(--error);
+  background: #fef3f2;
+  border: 1px solid #fecdca;
+  border-radius: var(--radius-sm);
+}
+
+/* ============================================================
+   6. PORTFOLIO (base structure)
+   The layout and neutral look shared by every template: a "hero"
+   (name, title, summary, email) on top, then a "details" area
+   (skills, education, projects). The .theme-* classes in section 9
+   restyle all of this.
+   ============================================================ */
+
+/* The portfolio gets a wider column than the upload and template
+   screens. :has() checks "does .app contain a .portfolio right now?".
+   Very old browsers ignore this rule and just keep the narrower column. */
+.app:has(.portfolio) .app-header,
+.app:has(.portfolio) .app-main {
+  max-width: 960px;
+}
+
+.portfolio {
+  overflow: hidden;
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* ----- Hero ----- */
+.portfolio-hero {
+  padding: 2.5rem 2rem;
+  color: var(--white);
+  background: radial-gradient(
+      at 90% 0%,
+      rgba(125, 211, 252, 0.28) 0,
+      transparent 55%
+    ),
+    linear-gradient(135deg, var(--blue-900), var(--blue-600));
+}
+
+.portfolio-intro {
+  position: relative;
+  max-width: 40rem;
+}
+
+/* Decorative text that only some themes switch on (see section 9). */
+.portfolio-eyebrow,
+.portfolio-title-prefix {
+  display: none;
+}
+
+.portfolio-name {
+  margin: 0;
+  font-size: 2.1rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.portfolio-title {
+  margin: 0.35rem 0 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #c7d8ff;
+}
+
+.portfolio-summary {
+  margin: 1rem 0 0;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* The email is a link now; inline-block lets it take a top margin. */
+.portfolio-email {
+  display: inline-block;
+  margin-top: 1.1rem;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+}
+
+/* ----- Details ----- */
+.portfolio-section {
+  padding: 1.6rem 2rem;
+  border-top: 1px solid var(--slate-200);
+}
+
+.portfolio-section h3 {
+  margin: 0 0 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--slate-900);
+}
+
+.portfolio-section p {
+  margin: 0;
+  color: var(--slate-700);
+}
+
+/* One education or project entry: a soft tinted panel. */
+.portfolio-item {
+  padding: 1rem 1.25rem;
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+}
+
+.portfolio-item + .portfolio-item {
+  margin-top: 0.75rem;
+}
+
+/* Two class names so these beat ".portfolio-section p" above. */
+.portfolio-section .item-title {
+  margin-bottom: 0.2rem;
+  font-weight: 600;
+  color: var(--slate-900);
+}
+
+.portfolio-section .item-meta {
+  color: var(--slate-500);
+}
+
+/* Skills: tags that wrap onto new lines. */
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.skill-tag {
+  padding: 0.3rem 0.85rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--blue-700);
+  background: var(--blue-50);
+  border: 1px solid var(--blue-100);
+  border-radius: 999px;
+}
+
+/* Space around the "Upload a different resume" button. */
+.portfolio > .button {
+  margin: 1.5rem 2rem 2rem;
+}
+
+/* ============================================================
+   7. SMALL SCREENS + REDUCED MOTION
+   ============================================================ */
+@media (max-width: 520px) {
+  .app {
+    padding: 2rem 1rem 3rem;
+  }
+
+  .upload-form {
+    padding: 1.5rem;
+  }
+
+  .portfolio-hero {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .portfolio-name {
+    font-size: 1.7rem;
+  }
+
+  .portfolio-section {
+    padding: 1.25rem;
+  }
+
+  .portfolio > .button {
+    width: calc(100% - 2.5rem);
+    margin: 0.5rem 1.25rem 1.5rem;
+  }
+}
+
+/* Respect users who ask their system for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .dropzone {
+    transition: none;
+  }
+
+  .button:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* ============================================================
+   8. TEMPLATE SELECTOR (step 2)
+   Same white card as the upload form, with three soft, selectable
+   template cards inside it.
+   ============================================================ */
+.template-selector {
+  padding: 2.25rem;
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.template-selector h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+.template-subheading {
+  margin: 0.25rem 0 1.75rem;
+  color: var(--slate-500);
+}
+
+/* Three equal columns; collapses to one column on small screens. */
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+/* Each card is a <button>, so we reset the browser's button look first. */
+.template-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1rem;
+  font-family: inherit;
+  text-align: left;
+  color: var(--slate-900);
+  /* A faint tint fading into white echoes the page's mesh gradient. */
+  background: linear-gradient(160deg, var(--blue-50) 0%, var(--white) 70%);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Hover: lift the card and add depth to show it can be clicked. */
+.template-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--blue-500);
+  box-shadow: 0 14px 28px -10px rgba(35, 71, 197, 0.3);
+}
+
+.template-card:focus-visible {
+  outline: 3px solid var(--blue-100);
+  outline-offset: 2px;
+}
+
+/* Selected: stronger border plus a soft ring. */
+.template-card-selected,
+.template-card-selected:hover {
+  border-color: var(--blue-600);
+  box-shadow: 0 0 0 4px var(--blue-100),
+    0 14px 28px -10px rgba(35, 71, 197, 0.3);
+}
+
+/* Spans are inline by default; make the text lines stack. */
+.template-card-name {
+  display: block;
+  margin-top: 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.template-card-description {
+  display: block;
+  margin: 0.25rem 0 0.9rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--slate-500);
+}
+
+/* Round indicator in the top-right corner. Empty ring normally,
+   filled blue with a white centre dot when selected. */
+.template-card-check {
+  position: absolute;
+  top: 1.35rem;
+  right: 1.35rem;
+  width: 1.15rem;
+  height: 1.15rem;
+  box-sizing: border-box;
+  background: var(--white);
+  border: 2px solid var(--slate-300);
+  border-radius: 50%;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.template-card-selected .template-card-check {
+  border-color: var(--blue-600);
+  background: var(--blue-600);
+  box-shadow: inset 0 0 0 3px var(--white);
+}
+
+/* Pill-shaped feature tags, pushed to the bottom of the card so tags
+   line up across cards of different text length. */
+.template-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: auto;
+}
+
+.template-tag {
+  padding: 0.2rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--blue-700);
+  background: var(--white);
+  border: 1px solid var(--blue-100);
+  border-radius: 999px;
+}
+
+/* ----- Mini previews -----
+   A tiny stand-in for each theme, drawn with one element and two
+   pseudo-elements (a title bar and a subtitle bar). */
+.template-preview {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 4.25rem;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: var(--preview-bg);
+  border: 1px solid var(--preview-border, transparent);
+}
+
+.template-preview::before,
+.template-preview::after {
+  content: '';
+  position: absolute;
+  left: 0.8rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--preview-ink);
+}
+
+.template-preview::before {
+  top: 0.9rem;
+  width: 45%;
+}
+
+.template-preview::after {
+  top: 1.85rem;
+  width: 28%;
+  opacity: 0.6;
+}
+
+.preview-modern-clean {
+  --preview-bg: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+  --preview-ink: var(--white);
+}
+
+.preview-professional-bold {
+  --preview-bg: linear-gradient(135deg, #0b1b3a, #14306b);
+  --preview-ink: var(--white);
+  /* A bright strip along the bottom edge, like the real theme. */
+  box-shadow: inset 0 -4px 0 var(--blue-500);
+}
+
+.preview-creative-minimal {
+  --preview-bg: var(--white);
+  --preview-ink: var(--slate-300);
+  --preview-border: var(--slate-200);
+}
+
+/* Back + Generate buttons side by side. */
+.template-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.template-actions .button {
+  flex: 1;
+}
+
+.template-actions .button-secondary {
+  flex: 0 0 auto;
+  padding-left: 1.75rem;
+  padding-right: 1.75rem;
+}
+
+/* ============================================================
+   9. PORTFOLIO THEMES
+   Portfolio.js adds one of these classes next to .portfolio.
+   Each theme starts with a few colour/font variables (--theme-*)
+   so you can re-colour it without hunting through the rules below.
+   Theme selectors use two class names (e.g. ".theme-x .portfolio-hero"),
+   so they beat the base rules in section 6 without !important.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   MODERN CLEAN: a light take on the RIEAD layout. White and pale
+   blue surfaces, cyan accents, a faint hexagon, pill-shaped email
+   button, and "And I'm a <title>" with the title in cyan.
+   ------------------------------------------------------------ */
+.theme-modern-clean {
+  --theme-ink: #10222c; /* main text */
+  --theme-body: #3b5866; /* paragraphs */
+  --theme-muted: #5d7886; /* secondary text */
+  --theme-accent: #0891b2; /* cyan used for text (readable on light) */
+  --theme-bright: #22d3ee; /* bright cyan used for fills and borders */
+  --theme-line: #d6e8ee; /* dividers */
+  --theme-font: 'Montserrat', 'Segoe UI', system-ui, -apple-system, Roboto,
+    Helvetica, Arial, sans-serif;
+
+  font-family: var(--theme-font);
+  color: var(--theme-ink);
+  background: var(--white);
+  border-color: var(--theme-line);
+  box-shadow: 0 1px 2px rgba(8, 60, 80, 0.05),
+    0 24px 48px -18px rgba(8, 100, 130, 0.28);
+}
+
+.theme-modern-clean .portfolio-hero {
+  position: relative;
+  padding: 4rem 3.5rem;
+  color: var(--theme-ink);
+  background: linear-gradient(135deg, #e3f5fa 0%, #f5fbfd 60%, var(--white) 100%);
+}
+
+/* Faint hexagon on the right, a nod to the reference's photo frame.
+   It is pure decoration: clip-path cuts a gradient box into a hexagon. */
+.theme-modern-clean .portfolio-hero::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 4.5rem;
+  width: 15rem;
+  height: 17rem;
+  transform: translateY(-50%);
+  background: linear-gradient(160deg, #b8eef7, var(--theme-bright));
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  opacity: 0.45;
+}
+
+.theme-modern-clean .portfolio-name {
+  font-size: 3rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.theme-modern-clean .portfolio-title {
+  margin-top: 0.6rem;
+  font-size: 1.55rem;
+  font-weight: 600;
+  color: var(--theme-ink);
+}
+
+.theme-modern-clean .portfolio-title-prefix {
+  display: inline;
+  font-weight: 500;
+}
+
+.theme-modern-clean .portfolio-title-text {
+  color: var(--theme-accent);
+}
+
+.theme-modern-clean .portfolio-summary {
+  max-width: 34rem;
+  margin-top: 1.1rem;
+  font-weight: 500;
+  line-height: 1.75;
+  color: var(--theme-body);
+}
+
+/* The email becomes a bright cyan pill with a soft glow. */
+.theme-modern-clean .portfolio-email {
+  margin-top: 1.6rem;
+  padding: 0.7rem 1.6rem;
+  font-weight: 600;
+  color: #06303a;
+  background: var(--theme-bright);
+  border-radius: 999px;
+  box-shadow: 0 8px 20px -6px rgba(34, 211, 238, 0.75);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.theme-modern-clean .portfolio-email:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -6px rgba(34, 211, 238, 0.85);
+}
+
+.theme-modern-clean .portfolio-email:focus-visible {
+  outline: 3px solid var(--theme-accent);
+  outline-offset: 3px;
+}
+
+.theme-modern-clean .portfolio-section {
+  padding: 2rem 3.5rem;
+  border-top-color: var(--theme-line);
+}
+
+/* Bold section headings with a short cyan bar underneath. */
+.theme-modern-clean .portfolio-section h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--theme-ink);
+}
+
+.theme-modern-clean .portfolio-section h3::after {
+  content: '';
+  display: block;
+  width: 2.5rem;
+  height: 3px;
+  margin-top: 0.5rem;
+  background: var(--theme-bright);
+  border-radius: 999px;
+}
+
+.theme-modern-clean .portfolio-section p {
+  color: var(--theme-body);
+}
+
+/* Entries: white panels with a cyan left edge and a soft shadow. */
+.theme-modern-clean .portfolio-item {
+  background: var(--white);
+  border: 1px solid var(--theme-line);
+  border-left: 4px solid var(--theme-bright);
+  border-radius: 10px;
+  box-shadow: 0 6px 16px -10px rgba(8, 100, 130, 0.35);
+}
+
+.theme-modern-clean .portfolio-section .item-title {
+  font-weight: 700;
+  color: var(--theme-ink);
+}
+
+.theme-modern-clean .portfolio-section .item-meta {
+  color: var(--theme-muted);
+}
+
+/* Minimal tags: thin cyan outline, no fill. */
+.theme-modern-clean .skill-tag {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0e7490;
+  background: transparent;
+  border: 1.5px solid var(--theme-bright);
+}
+
+.theme-modern-clean > .button {
+  margin: 1.75rem 3.5rem 2.5rem;
+  color: var(--theme-accent);
+  background: var(--white);
+  border-color: var(--theme-bright);
+}
+
+.theme-modern-clean > .button:hover:not(:disabled) {
+  background: #e3f5fa;
+  border-color: var(--theme-accent);
+}
+
+/* ------------------------------------------------------------
+   PROFESSIONAL BOLD: the Raees layout. Pale sage page inside an
+   olive frame, a big light-weight name with the surname in bold
+   teal, "Hi there" label, skills as stacked coloured bars, and
+   white entry panels with a teal edge.
+   ------------------------------------------------------------ */
+.theme-professional-bold {
+  --theme-frame: #6b7c45; /* olive green border */
+  --theme-bg: #dfe2d0; /* pale sage page */
+  --theme-ink: #15130f; /* main text */
+  --theme-body: #2e2d26; /* paragraphs */
+  --theme-accent: #0d8a74; /* teal */
+  --theme-coral: #f4735b; /* skill bar 1 */
+  --theme-peach: #f9b27c; /* skill bar 3 */
+  --theme-maroon: #3a0f1a; /* skill bar 4 */
+  --theme-font: 'Outfit', 'Poppins', 'Segoe UI', system-ui, -apple-system,
+    Roboto, Helvetica, Arial, sans-serif;
+
+  font-family: var(--theme-font);
+  color: var(--theme-ink);
+  background: var(--theme-bg);
+  border: 14px solid var(--theme-frame);
+  border-radius: 4px;
+}
+
+.theme-professional-bold .portfolio-hero {
+  padding: 3.25rem 3.5rem 2rem;
+  color: var(--theme-ink);
+  background: none;
+}
+
+/* "HI THERE ——": small bold label followed by a short line. */
+.theme-professional-bold .portfolio-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.theme-professional-bold .portfolio-eyebrow::after {
+  content: '';
+  flex: 0 0 5rem;
+  height: 2px;
+  background: var(--theme-ink);
+}
+
+/* Big, light name; the rest of the name drops to a second line in bold teal. */
+.theme-professional-bold .portfolio-name {
+  font-size: clamp(2.8rem, 7vw, 4.75rem);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.theme-professional-bold .name-first,
+.theme-professional-bold .name-rest {
+  display: block;
+}
+
+.theme-professional-bold .name-rest {
+  font-weight: 700;
+  color: var(--theme-accent);
+}
+
+/* The title gets a heavy underline, like the underlined name in the reference. */
+.theme-professional-bold .portfolio-title {
+  display: inline-block;
+  margin-top: 1.25rem;
+  padding-bottom: 0.2rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--theme-ink);
+  border-bottom: 3px solid var(--theme-ink);
+}
+
+.theme-professional-bold .portfolio-summary {
+  max-width: 34rem;
+  margin-top: 1.25rem;
+  line-height: 1.75;
+  color: var(--theme-body);
+}
+
+/* Bold text link with an arrow, like "Learn More →". */
+.theme-professional-bold .portfolio-email {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 1.25rem;
+  font-weight: 700;
+  color: var(--theme-ink);
+}
+
+.theme-professional-bold .portfolio-email::after {
+  content: '→';
+  margin-left: 0.5rem;
+  transition: transform 0.15s ease;
+}
+
+.theme-professional-bold .portfolio-email:hover::after {
+  transform: translateX(4px);
+}
+
+.theme-professional-bold .portfolio-email:focus-visible {
+  outline: 3px solid var(--theme-accent);
+  outline-offset: 3px;
+}
+
+.theme-professional-bold .portfolio-section {
+  padding: 2rem 3.5rem;
+  border-top: 2px solid rgba(21, 19, 15, 0.15);
+}
+
+/* Section headings use the same "label ——" style as the hero. */
+.theme-professional-bold .portfolio-section h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--theme-ink);
+}
+
+.theme-professional-bold .portfolio-section h3::after {
+  content: '';
+  flex: 0 0 4rem;
+  height: 2px;
+  background: var(--theme-ink);
+}
+
+.theme-professional-bold .portfolio-section p {
+  color: var(--theme-body);
+}
+
+/* Entries: white panels with a teal left edge. */
+.theme-professional-bold .portfolio-item {
+  background: var(--white);
+  border: none;
+  border-left: 6px solid var(--theme-accent);
+  border-radius: 0;
+}
+
+.theme-professional-bold .portfolio-section .item-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--theme-ink);
+}
+
+.theme-professional-bold .portfolio-section .item-meta {
+  color: #5a5a4e;
+}
+
+/* Skills as stacked bars, like the stats in the reference. Each bar is a
+   little shorter than the one above, and the four colours repeat. */
+.theme-professional-bold .skills-list {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  max-width: 26rem;
+}
+
+.theme-professional-bold .skill-tag {
+  box-sizing: border-box;
+  width: fit-content;
+  min-width: 46%;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--white);
+  background: var(--theme-accent);
+  border: none;
+  border-radius: 0;
+}
+
+.theme-professional-bold .skill-tag:nth-child(1) { min-width: 100%; }
+.theme-professional-bold .skill-tag:nth-child(2) { min-width: 88%; }
+.theme-professional-bold .skill-tag:nth-child(3) { min-width: 76%; }
+.theme-professional-bold .skill-tag:nth-child(4) { min-width: 64%; }
+.theme-professional-bold .skill-tag:nth-child(5) { min-width: 54%; }
+
+.theme-professional-bold .skill-tag:nth-child(4n + 1) {
+  color: var(--theme-ink);
+  background: var(--theme-coral);
+}
+
+.theme-professional-bold .skill-tag:nth-child(4n + 2) {
+  color: var(--white);
+  background: var(--theme-accent);
+}
+
+.theme-professional-bold .skill-tag:nth-child(4n + 3) {
+  color: var(--theme-ink);
+  background: var(--theme-peach);
+}
+
+.theme-professional-bold .skill-tag:nth-child(4n + 4) {
+  color: var(--white);
+  background: var(--theme-maroon);
+}
+
+.theme-professional-bold > .button {
+  margin: 1.5rem 3.5rem 2.5rem;
+  color: var(--theme-bg);
+  background: var(--theme-ink);
+  border-color: var(--theme-ink);
+  border-radius: 0;
+  font-weight: 700;
+}
+
+.theme-professional-bold > .button:hover:not(:disabled) {
+  background: var(--theme-accent);
+  border-color: var(--theme-accent);
+}
+
+/* ------------------------------------------------------------
+   CREATIVE MINIMAL: white page, thin lines, light typography.
+   (Unchanged look.)
+   ------------------------------------------------------------ */
+.theme-creative-minimal .portfolio-hero {
+  color: var(--slate-900);
+  background: var(--white);
+}
+
+.theme-creative-minimal .portfolio-name {
+  font-weight: 300;
+  letter-spacing: -0.03em;
+}
+
+.theme-creative-minimal .portfolio-title {
+  color: var(--blue-600);
+}
+
+.theme-creative-minimal .portfolio-email {
+  color: var(--slate-500);
+}
+
+.theme-creative-minimal .portfolio-summary {
+  color: var(--slate-700);
+}
+
+.theme-creative-minimal .portfolio-item {
+  padding: 0.25rem 0 0.25rem 1rem;
+  background: transparent;
+  border: none;
+  border-left: 2px solid var(--slate-200);
+  border-radius: 0;
+}
+
+.theme-creative-minimal .skill-tag {
+  color: var(--slate-700);
+  background: transparent;
+  border-color: var(--slate-300);
+}
+
+/* ------------------------------------------------------------
+   Themes on small screens and narrower windows.
+   ------------------------------------------------------------ */
+
+/* The decorative hexagon would overlap the text in a narrow card. */
+@media (max-width: 1000px) {
+  .theme-modern-clean .portfolio-hero::after {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .theme-modern-clean .portfolio-hero {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .theme-modern-clean .portfolio-name {
+    font-size: 2.1rem;
+  }
+
+  .theme-modern-clean .portfolio-title {
+    font-size: 1.25rem;
+  }
+
+  .theme-professional-bold {
+    border-width: 8px;
+  }
+
+  .theme-professional-bold .portfolio-hero {
+    padding: 2.25rem 1.5rem 1.5rem;
+  }
+
+  .theme-modern-clean .portfolio-section,
+  .theme-professional-bold .portfolio-section {
+    padding: 1.5rem;
+  }
+
+  .theme-modern-clean > .button,
+  .theme-professional-bold > .button {
+    width: calc(100% - 3rem);
+    margin: 1.25rem 1.5rem 1.75rem;
+  }
+}
+
+/* ============================================================
+   10. TEMPLATE SELECTOR: SMALL SCREENS + REDUCED MOTION
+   ============================================================ */
+@media (max-width: 600px) {
+  .template-selector {
+    padding: 1.5rem;
+  }
+
+  .template-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .template-actions {
+    flex-direction: column-reverse;
+  }
+
+  .template-actions .button-secondary {
+    flex: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .template-card,
+  .template-card-check {
+    transition: none;
+  }
+
+  .template-card:hover {
+    transform: none;
+  }
+}
+
+/* ============================================================
+   11. SOCIAL LINKS ROW + BULLET LISTS
+   - .portfolio-links holds the email and the social links in the hero.
+     The links themselves reuse the .portfolio-email styles, so each
+     theme draws them as pills, arrow links or plain text.
+   - .portfolio-list is the simple bullet list used by Achievements
+     and Extracurriculars.
+   ============================================================ */
+.portfolio-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 1rem; /* space between links; each link already has its own top margin */
+}
+
+.portfolio-list {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.portfolio-list li {
+  margin: 0.4rem 0;
+  line-height: 1.6;
+  color: var(--slate-700);
+}
+
+.portfolio-list li::marker {
+  color: var(--blue-600);
+}
+
+/* Modern Clean: cyan bullets, same body text colour as its paragraphs. */
+.theme-modern-clean .portfolio-list li {
+  color: var(--theme-body);
+}
+
+.theme-modern-clean .portfolio-list li::marker {
+  color: var(--theme-bright);
+}
+
+/* Professional Bold: square teal bullets, and wider gaps between the
+   text links so "name@example.com →" and "GitHub →" do not run together. */
+.theme-professional-bold .portfolio-links {
+  column-gap: 1.75rem;
+}
+
+.theme-professional-bold .portfolio-list {
+  list-style: square;
+}
+
+.theme-professional-bold .portfolio-list li {
+  color: var(--theme-body);
+}
+
+.theme-professional-bold .portfolio-list li::marker {
+  color: var(--theme-accent);
+}
+
+/* ============================================================
+   12. EDIT DATA FORM (review and edit step)
+   A white card with a heading, a scrollable middle area that holds
+   all the inputs, and a button row that always stays in view.
+   ============================================================ */
+.edit-data {
+  padding: 2.25rem;
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.edit-data h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+.edit-hint {
+  margin: 0.25rem 0 1.25rem;
+  color: var(--slate-500);
+}
+
+/* Only this area scrolls. The lines at the top and bottom show where it ends. */
+.edit-scroll {
+  max-height: 60vh;
+  margin-bottom: 1.25rem;
+  padding: 0 0.75rem 0 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-top: 1px solid var(--slate-200);
+  border-bottom: 1px solid var(--slate-200);
+  scrollbar-width: thin;
+  scrollbar-color: #7dd3fc transparent;
+}
+
+/* Each block of the form: "Basic information", "Skills", and so on. */
+.edit-group {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.edit-group:last-child {
+  border-bottom: none;
+}
+
+.edit-group h3 {
+  margin: 0 0 0.9rem;
+  font-size: 1.05rem;
+  color: var(--slate-900);
+}
+
+/* Heading on the left, "+ Add ..." button on the right. */
+.edit-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.edit-group-header h3 {
+  margin: 0;
+}
+
+/* ----- Inputs ----- */
+.field {
+  margin-bottom: 0.9rem;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--slate-700);
+}
+
+.input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.65rem 0.8rem;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--slate-900);
+  background: var(--white);
+  border: 1px solid var(--slate-300);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+textarea.input {
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.input::placeholder {
+  color: #94a3b8;
+}
+
+.input:hover {
+  border-color: #94a3b8;
+}
+
+/* The soft blue ring is the focus indicator, so the default outline is off. */
+.input:focus {
+  outline: none;
+  border-color: var(--blue-500);
+  box-shadow: 0 0 0 3px var(--blue-100);
+}
+
+/* ----- One row of a list (a skill, a project, ...) ----- */
+.edit-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding: 0.9rem;
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+}
+
+/* The boxes of a row sit in a grid that wraps on narrow screens. */
+.edit-row-fields {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.75rem;
+}
+
+.edit-row .field {
+  margin-bottom: 0;
+}
+
+/* Text areas take the whole row. */
+.field-wide {
+  grid-column: 1 / -1;
+}
+
+/* Rows with a single box (skills, achievements, ...): one compact line.
+   The label stays in the page for screen readers but is visually hidden. */
+.edit-row-single {
+  align-items: center;
+}
+
+.edit-row-single .edit-row-fields {
+  display: block;
+}
+
+.edit-row-single .field-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Shown when a list has no rows. */
+.edit-empty {
+  margin: 0 0 0.25rem;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--slate-500);
+}
+
+/* ----- Buttons for adding and removing rows ----- */
+.button-small {
+  flex: 0 0 auto;
+  width: auto;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.9rem;
+  border-radius: var(--radius-sm);
+}
+
+.button-remove {
+  color: var(--error);
+  border-color: #fecdca;
+}
+
+.button-remove:hover:not(:disabled) {
+  background: #fef3f2;
+  border-color: var(--error);
+}
+
+/* In rows with several boxes, line Remove up with the first box. */
+.edit-row:not(.edit-row-single) .button-remove {
+  margin-top: 1.4rem;
+}
+
+/* ----- Bottom buttons ----- */
+.edit-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.edit-actions .button {
+  flex: 1;
+}
+
+.edit-actions .button-secondary {
+  flex: 0 0 auto;
+  padding-left: 1.75rem;
+  padding-right: 1.75rem;
+}
+
+/* ----- Small screens ----- */
+@media (max-width: 600px) {
+  .edit-data {
+    padding: 1.5rem;
+  }
+
+  .edit-scroll {
+    max-height: 55vh;
+  }
+
+  .edit-actions {
+    flex-direction: column-reverse;
+  }
+
+  .edit-actions .button-secondary {
+    flex: 1;
+  }
+}
+
+/* Rows stack: boxes on top, Remove underneath on the right. */
+@media (max-width: 520px) {
+  .edit-row,
+  .edit-row-single {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .edit-row:not(.edit-row-single) .button-remove {
+    margin-top: 0;
+  }
+
+  .edit-row .button-remove {
+    align-self: flex-end;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input {
+    transition: none;
+  }
+}
